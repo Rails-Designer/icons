@@ -1,0 +1,3 @@
+module MyGem
+  # TBD
+end
