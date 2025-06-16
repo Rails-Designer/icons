@@ -1,3 +1,3 @@
-module MyGem
+module Icons
   # TBD
 end
