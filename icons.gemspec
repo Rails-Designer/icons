@@ -1,11 +1,22 @@
-Gem::Specification.new do |s|
-  s.name        = "icons"
-  s.version     = "0.0.2"
-  s.summary     = "Add any icon library to a Ruby app"
-  s.description = "Coming soon. Add any icon library to a Ruby app, from Heroicons, to Lucide to Tabler (and others). Icons is library-agnostic, so you can add any library while using the same interface."
-  s.authors     = ["Rails Designer Developers"]
-  s.email       = "devs@railsdeigner.com"
-  s.files       = ["lib/icons.rb"]
-  s.homepage    = "https://github.com/Rails-Designer/icons"
-  s.license     = "MIT"
+# frozen_string_literal: true
+
+require_relative "lib/icons/version"
+
+Gem::Specification.new do |spec|
+  spec.name = "icons"
+  spec.version = Icons::VERSION
+  spec.authors = ["Rails Designer"]
+  spec.email = ["devs@railsdesigner.com"]
+
+  spec.summary = "Add any icon library to a Ruby app"
+  spec.description = "Add any icon library to a Ruby app, from Heroicons, to Lucide to Phosphor (and others). Icons is library-agnostic, so you can add any library while using the same interface."
+  spec.homepage = "https://railsdesigner.com/icons/"
+  spec.license = "MIT"
+
+  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["source_code_uri"] = "https://github.com/Rails-Designer/icons/"
+
+  spec.files = Dir["{bin,config,lib}/**/*", "Rakefile", "README.md", "icons.gemspec", "Gemfile", "Gemfile.lock"]
+
+  spec.add_runtime_dependency "nokogiri", "~> 1.16", ">= 1.16.4"
 end
