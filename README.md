@@ -1,6 +1,6 @@
 # Icons
 
-Add any icon library to a Ruby app. Icons has first-party support for a [dozen of libraries](#first-party-libraries)). It is library agnostic so it can be used with any icon library using the same interface.
+Add any icon library to a Ruby app. Icons has first-party support for a [dozen of libraries](#first-party-libraries). It is library agnostic so it can be used with any icon library using the same interface.
 
 
 ## Installation
@@ -18,7 +18,7 @@ bundle install
 
 ## Usage
 
-The core gem is designed to be configured by higher-level layers (as seen with [rails_icons](https://github.com/Rails-Designer/rails_icons) but can be used directly if needed.
+The core gem is designed to be configured by higher-level layers (as seen with [rails_icons](https://github.com/Rails-Designer/rails_icons)) but can be used directly if needed.
 
 Example:
 ```ruby
