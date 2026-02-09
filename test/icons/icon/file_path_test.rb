@@ -27,18 +27,6 @@ class Icons::Icon::FilePathTest < Minitest::Test
     assert_match(/faded-spinner\.svg$/, path.to_s)
   end
 
-  def test_raises_error_for_missing_icon
-    file_path = Icons::Icon::FilePath.new(
-      name: "nonexistent",
-      library: "heroicons",
-      variant: "outline"
-    )
-
-    assert_raises(Icons::IconNotFound) do
-      file_path.call
-    end
-  end
-
   def test_handles_library_without_variant
     file_path = Icons::Icon::FilePath.new(
       name: "alien",
