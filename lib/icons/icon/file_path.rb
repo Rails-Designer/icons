@@ -20,11 +20,7 @@ module Icons
 
         return custom_library_path if custom_library?
 
-        icon_path = icons_path_in_app
-
-        raise Icons::IconNotFound if icon_path.nil?
-
-        icon_path
+        app_path
       end
 
       private
@@ -49,12 +45,6 @@ module Icons
       def custom_library_path
         library_config = Icons.libraries[@library.to_sym]
         Icons.config.base_path.join(library_config.custom_path, "#{@name}.svg")
-      end
-
-      def icons_path_in_app
-        path = app_path
-
-        path if File.exist?(path)
       end
 
       def app_path
