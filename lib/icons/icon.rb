@@ -16,12 +16,12 @@ class Icons::Icon
   end
 
   def svg
-    raise Icons::IconNotFound, error_message unless File.exist?(file_path)
-
     Nokogiri::HTML::DocumentFragment.parse(File.read(file_path))
       .at_css("svg")
       .tap { |svg| attach_attributes(to: svg) }
       .to_html
+  rescue Errno::ENOENT
+    raise Icons::IconNotFound, error_message
   end
 
   private
