@@ -37,11 +37,11 @@ module Icons
 
       def source
         {
-          url: "https://github.com/atisawd/boxicons.git",
+          url: "https://github.com/box-icons/boxicons-core.git",
           variants: {
-            logos: "svg/logos",
-            regular: "svg/regular",
-            solid: "svg/solid"
+            logos: "svg/brands",
+            regular: "svg/basic",
+            solid: "svg/filled"
           }
         }
       end
