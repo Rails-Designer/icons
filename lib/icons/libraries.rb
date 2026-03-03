@@ -3,6 +3,7 @@ require "icons/configuration/boxicons"
 require "icons/configuration/feather"
 require "icons/configuration/flags"
 require "icons/configuration/heroicons"
+require "icons/configuration/hugeicons"
 require "icons/configuration/linear"
 require "icons/configuration/lucide"
 require "icons/configuration/phosphor"
@@ -20,6 +21,7 @@ module Icons
       feather: Icons::Configuration::Feather,
       flags: Icons::Configuration::Flags,
       heroicons: Icons::Configuration::Heroicons,
+      hugeicons: Icons::Configuration::Hugeicons,
       linear: Icons::Configuration::Linear,
       lucide: Icons::Configuration::Lucide,
       phosphor: Icons::Configuration::Phosphor,
