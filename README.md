@@ -45,6 +45,7 @@ The resulting SVG will include the proper attributes and the SVG content from th
 - [Feather](https://railsdesigner.com/open-source/rails-icons/feather/) (280+ icons)
 - [Flags](https://railsdesigner.com/open-source/rails-icons/flags/) (540+ icons)
 - [Heroicons](https://railsdesigner.com/open-source/rails-icons/heroicons/) (300+ icons)
+- [Hugeicons](https://railsdesigner.com/open-source/rails-icons/hugeicons/) (4600+ icons)
 - [Linear](https://railsdesigner.com/open-source/rails-icons/linear/) (170+ icons)
 - [Lucide](https://railsdesigner.com/open-source/rails-icons/lucide/) (1500+ icons)
 - [Phosphor](https://railsdesigner.com/open-source/rails-icons/phosphor/) (9000+ icons)
