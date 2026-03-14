@@ -22,7 +22,7 @@ class Icons::IconTest < Minitest::Test
   end
 
   def test_returns_svg_with_custom_data_attributes
-    icon = Icons::Icon.new(name: "academic-cap", library: "heroicons", arguments: {data: {controller: "swap"}})
+    icon = Icons::Icon.new(name: "academic-cap", library: :heroicons, arguments: {data: {controller: "swap"}})
 
     assert_match(/data-controller="swap"/, icon.svg, "SVG should contain 'data-attributes'")
   end
@@ -40,7 +40,7 @@ class Icons::IconTest < Minitest::Test
   end
 
   def test_setting_variant_returns_svg
-    icon = Icons::Icon.new(name: "academic-cap", library: "heroicons", variant: "mini", arguments: {})
+    icon = Icons::Icon.new(name: "academic-cap", library: "heroicons", variant: :mini, arguments: {})
 
     assert icon.svg
   end
@@ -48,7 +48,7 @@ class Icons::IconTest < Minitest::Test
   def test_uses_library_specific_default_variant_over_global
     Icons.configure do |config|
       config.default_variant = "global variant"
-      config.libraries[:heroicons][:default_variant] = "outline"
+      config.libraries[:heroicons][:default_variant] = :outline
     end
     icon = Icons::Icon.new(name: "academic-cap", library: "heroicons", arguments: {})
 
