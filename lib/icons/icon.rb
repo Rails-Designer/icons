@@ -10,8 +10,8 @@ class Icons::Icon
     @config = Icons.configuration
 
     @name = name
-    @library = library.to_s
-    @variant = (variant || set_variant).to_s
+    @library = library.to_sym
+    @variant = (variant || set_variant)&.to_sym
     @arguments = arguments
   end
 
@@ -27,7 +27,7 @@ class Icons::Icon
   private
 
   def set_variant
-    value = @config.libraries.dig(@library.to_sym, :default_variant) ||
+    value = @config.libraries.dig(@library, :default_variant) ||
       @config.default_variant
 
     value.to_s.empty? ? nil : value
@@ -66,7 +66,8 @@ class Icons::Icon
   end
 
   def library_attributes
-    keys = [@library, @variant].compact.reject { |k| k.to_s.empty? }
+    keys = [@library, @variant].compact
+
     @config.libraries.dig(*keys) || {}
   end
 end

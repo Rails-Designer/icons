@@ -7,8 +7,8 @@ module Icons
     class FilePath
       def initialize(name:, library:, variant:)
         @name = name
-        @library = library.to_s
-        @variant = variant
+        @library = library.to_sym
+        @variant = variant&.to_sym
       end
 
       def call
@@ -26,7 +26,7 @@ module Icons
       private
 
       def animated_library?
-        @library == "animated"
+        @library == :animated
       end
 
       def animated_icons_path
@@ -39,11 +39,12 @@ module Icons
       end
 
       def custom_library?
-        Icons.libraries[@library.to_sym]&.respond_to?(:custom_path)
+        Icons.libraries[@library]&.respond_to?(:custom_path)
       end
 
       def custom_library_path
-        library_config = Icons.libraries[@library.to_sym]
+        library_config = Icons.libraries[@library]
+
         Icons.config.base_path.join(library_config.custom_path, "#{@name}.svg")
       end
 
@@ -54,8 +55,8 @@ module Icons
       def parts
         [
           Icons.configuration.icons_path,
-          @library,
-          (@variant unless @variant == "."),  # Don't include "." as a directory
+          @library.to_s,
+          (@variant&.to_s unless @variant == :"."), # Don't include "." as a directory
           "#{@name}.svg"
         ].compact.reject { |p| p.to_s.empty? }
       end
