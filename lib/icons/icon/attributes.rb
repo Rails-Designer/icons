@@ -28,7 +28,6 @@ module Icons
       def token_list(value)
         case value
         when Array
-          # Flatten and process each element
           value.flatten.map { |v|
             if v.is_a?(Hash)
               v.select { |_, val| val }.keys.map(&:to_s).join(" ")
@@ -37,7 +36,6 @@ module Icons
             end
           }.compact.reject(&:empty?).join(" ")
         when Hash
-          # Handle both string and symbol keys, filter truthy values
           value.select { |_, v| v }.keys.map(&:to_s).join(" ")
         else
           value.to_s

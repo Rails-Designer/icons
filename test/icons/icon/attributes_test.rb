@@ -8,7 +8,7 @@ class Icons::Icon::AttributesTest < Minitest::Test
 
     attributes = Icons::Icon::Attributes.new(
       default_attributes: {class: "default"},
-      arguments: {class: "custom"}
+      arguments: {class: :custom}
     )
 
     attributes.attach(to: svg)
