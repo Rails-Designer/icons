@@ -50,7 +50,11 @@ module Icons
         {
           filenames: {
             delete_prefix: ["bxl-", "bx-", "bxs-"]
-          }
+          },
+
+          svg: [
+            {element: "path", action: :set_attribute, attribute: "fill", value: "currentColor"}
+          ]
         }
       end
 
