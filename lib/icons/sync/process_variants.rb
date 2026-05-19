@@ -47,10 +47,13 @@ module Icons
 
       def apply_transformations_to(destination)
         Dir.each_child(destination) do |filename|
-          File.rename(
-            File.join(destination, filename),
-            File.join(destination, Sync::Transformations.transform(filename, transformations.fetch(:filenames, {})))
-          )
+          original_file_path = File.join(destination, filename)
+          transformed_filename = Sync::Transformations.transform(filename, transformations)
+          transformed_file_path = File.join(destination, transformed_filename)
+
+          File.rename(original_file_path, transformed_file_path)
+
+          transform_svg(transformed_file_path)
         end
       end
 
@@ -74,6 +77,14 @@ module Icons
         else
           {}
         end
+      end
+
+      def transform_svg(file_path)
+        return if File.extname(file_path) != ".svg"
+
+        svg_transformations = transformations.fetch(:svg, [])
+
+        Sync::Transformations.transform_svg(file_path, svg_transformations)
       end
     end
   end
