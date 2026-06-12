@@ -34,6 +34,22 @@ Icons::Sync.new("lucide").now
 # Render an icon
 icon = Icons::Icon.new(name: "check", library: "lucide", variant: "outline", arguments: { class: "text-gray-500" })
 svg = icon.svg
+
+# Generate SVG sprite for performance
+sprite = Icons::Sprite.new(icons: ["check", "search"], library: "lucide", variant: "outline")
+svg = sprite.svg
+# => <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+#      <symbol id="lucide_outline_check" viewBox="0 0 24 24">...</symbol>
+#      <symbol id="lucide_outline_search" viewBox="0 0 24 24">...</symbol>
+#    </svg>
+
+# Or configure globally
+Icons.configure do |config|
+  config.sprite = { lucide: { outline: ["check", "search"] } }
+end
+
+sprite = Icons::Sprite.new
+sprite.svg
 ```
 
 The resulting SVG will include the proper attributes and the SVG content from the library’s asset path.

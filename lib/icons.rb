@@ -5,6 +5,8 @@ require "icons/errors"
 require "icons/libraries"
 require "icons/configuration"
 require "icons/icon"
+require "icons/sprite/reference"
+require "icons/sprite"
 require "icons/sync"
 
 module Icons
