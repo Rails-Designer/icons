@@ -5,7 +5,7 @@ require "icons/configuration/options"
 
 module Icons
   class Configuration
-    attr_accessor :default_library, :icons_path, :default_variant
+    attr_accessor :default_library, :icons_path, :default_variant, :sprite, :default_sprite_location, :validate_sprite_icons
     attr_reader :libraries
 
     def initialize
@@ -41,6 +41,9 @@ module Icons
       @default_library = nil
       @default_variant = nil
       @icons_path = "app/assets/svg/icons"
+      @sprite = {}
+      @default_sprite_location = nil
+      @validate_sprite_icons = false
     end
 
     def set_libraries_config
