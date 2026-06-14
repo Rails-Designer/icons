@@ -69,7 +69,7 @@ class Icons::Icon
       "stroke-width": default(:stroke_width),
       data: default(:data),
       class: default(:css)
-    }
+    }.compact
   end
 
   def default(key)
