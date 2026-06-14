@@ -97,6 +97,12 @@ class Icons::IconTest < Minitest::Test
     assert icon.svg
   end
 
+  def test_omits_empty_attributes_when_defaults_are_nil
+    icon = Icons::Icon.new(name: "acorn", library: "phosphor", arguments: {})
+
+    refute_match(/\w+=""/, icon.svg, "SVG should not contain empty-valued attributes")
+  end
+
   def test_phosphor_library
     icon = Icons::Icon.new(name: "acorn", library: "phosphor", arguments: {})
 
