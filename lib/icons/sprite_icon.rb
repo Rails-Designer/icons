@@ -3,8 +3,11 @@
 require "nokogiri"
 
 require "icons/icon/attributes"
+require "icons/icon/configurable"
 
 class Icons::SpriteIcon
+  include Icons::Icon::Configurable
+
   # @param name [String] The icon name
   # @param library [String, Symbol] The icon library
   # @param variant [String, Symbol, nil] The icon variant (optional)
@@ -42,23 +45,6 @@ class Icons::SpriteIcon
     @reference ||= Icons::Sprite::Reference.new(name: @name, library: @library, variant: @variant)
   end
 
-  def set_variant
-    value = @config.libraries.dig(@library, :default_variant) ||
-      @config.default_variant
-
-    value.to_s.empty? ? nil : value
-  end
-
-  def error_message
-    attributes = [
-      @library,
-      @variant,
-      @name
-    ].compact
-
-    "Icon not found: `#{attributes.join(" / ")}`"
-  end
-
   def sprite_svg
     sprite_href = @sprite_location.nil? ? "##{reference.id}" : "#{@sprite_location}##{reference.id}"
 
@@ -70,27 +56,5 @@ class Icons::SpriteIcon
       .at_css("svg")
       .tap { |svg| attach_attributes(to: svg) }
       .to_html
-  end
-
-  def attach_attributes(to:)
-    Icons::Icon::Attributes
-      .new(default_attributes: default_attributes, arguments: @arguments)
-      .attach(to: to)
-  end
-
-  def default_attributes
-    {
-      "stroke-width": default(:stroke_width),
-      data: default(:data),
-      class: default(:css)
-    }.compact
-  end
-
-  def default(key) = library_attributes.dig(:default, key)
-
-  def library_attributes
-    keys = [@library, @variant].compact
-
-    @config.libraries.dig(*keys) || {}
   end
 end
