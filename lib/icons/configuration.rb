@@ -5,7 +5,10 @@ require "icons/configuration/options"
 
 module Icons
   class Configuration
+    # @return [String, nil]
     attr_accessor :default_library, :icons_path, :default_variant, :sprite, :default_sprite_location, :validate_sprite_icons
+
+    # @return [Options]
     attr_reader :libraries
 
     def initialize
@@ -15,22 +18,31 @@ module Icons
       set_libraries_config
     end
 
+    # @deprecated Use {#icons_path} instead
+    # @return [String]
+    #
     def destination_path
       warn "[DEPRECATION] `destination_path` is deprecated. Use `icons_path` instead."
 
       @icons_path
     end
 
+    # @deprecated Use {#icons_path=} instead
+    #
     def destination_path=(value)
       warn "[DEPRECATION] `destination_path=` is deprecated. Use `icons_path=` instead."
 
       @icons_path = value
     end
 
+    # @return [Pathname]
+    #
     def base_path
       @base_path ||= Pathname.new(Dir.pwd)
     end
 
+    # @param value [Pathname, String]
+    #
     def base_path=(value)
       @base_path = value.is_a?(Pathname) ? value : Pathname.new(value)
     end

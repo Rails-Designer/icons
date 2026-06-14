@@ -2,6 +2,11 @@
 
 module Icons
   class Sprite
+    # @param config [Configuration] The configuration object (defaults to Icons.configuration)
+    # @param icons [Array<String>, nil] Optional list of icon names to include (defaults to configured icons)
+    # @param library [String, Symbol, nil] The icon library to use when icons are provided
+    # @param variant [String, Symbol, nil] The icon variant to use when icons are provided
+    #
     def initialize(config: Icons.configuration, icons: nil, library: nil, variant: nil)
       @config = config
       @icons = icons
@@ -9,6 +14,10 @@ module Icons
       @variant = variant
     end
 
+    # Returns the combined SVG sprite markup containing all icon symbols
+    #
+    # @return [String] The SVG markup with `<symbol>` elements wrapped in a hidden `<svg>`
+    #
     def svg
       symbols = references.filter_map { |reference| symbol_from(reference) }
 

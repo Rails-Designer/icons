@@ -5,6 +5,13 @@ require "nokogiri"
 require "icons/icon/attributes"
 
 class Icons::SpriteIcon
+  # @param name [String] The icon name
+  # @param library [String, Symbol] The icon library
+  # @param variant [String, Symbol, nil] The icon variant (optional)
+  # @param arguments [Hash] Additional attributes including class, data, stroke_width, etc.
+  # @param sprite_location [String, nil] Override URL for the sprite file (optional)
+  # @param config [Configuration] The configuration object (defaults to Icons.configuration)
+  #
   def initialize(name:, library:, arguments:, variant: nil, sprite_location: nil, config: Icons.configuration)
     @config = config
 
@@ -15,6 +22,12 @@ class Icons::SpriteIcon
     @sprite_location = sprite_location || @config.default_sprite_location
   end
 
+  # Returns the SVG markup referencing the icon from a sprite sheet
+  #
+  # @return [String] The SVG markup using a `<use>` tag referencing the sprite symbol
+  #
+  # @raise [Icons::IconNotFound] If validate_sprite_icons is enabled and the icon does not exist
+  #
   def svg
     if @config.validate_sprite_icons
       raise Icons::IconNotFound, error_message unless reference.exists?
