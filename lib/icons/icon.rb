@@ -4,8 +4,11 @@ require "nokogiri"
 
 require "icons/icon/file_path"
 require "icons/icon/attributes"
+require "icons/icon/configurable"
 
 class Icons::Icon
+  include Icons::Icon::Configurable
+
   # @param name [String] The icon name
   # @param library [String, Symbol] The icon library
   # @param variant [String, Symbol, nil] The icon variant (optional)
@@ -37,48 +40,7 @@ class Icons::Icon
 
   private
 
-  def set_variant
-    value = @config.libraries.dig(@library, :default_variant) ||
-      @config.default_variant
-
-    value.to_s.empty? ? nil : value
-  end
-
-  def error_message
-    attributes = [
-      @library,
-      @variant,
-      @name
-    ].compact
-
-    "Icon not found: `#{attributes.join(" / ")}`"
-  end
-
   def file_path
     Icons::Icon::FilePath.new(name: @name, library: @library, variant: @variant).call
-  end
-
-  def attach_attributes(to:)
-    Icons::Icon::Attributes
-      .new(default_attributes: default_attributes, arguments: @arguments)
-      .attach(to: to)
-  end
-
-  def default_attributes
-    {
-      "stroke-width": default(:stroke_width),
-      data: default(:data),
-      class: default(:css)
-    }.compact
-  end
-
-  def default(key)
-    library_attributes.dig(:default, key)
-  end
-
-  def library_attributes
-    keys = [@library, @variant].compact
-
-    @config.libraries.dig(*keys) || {}
   end
 end
