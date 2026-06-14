@@ -15,6 +15,8 @@ require "icons/configuration/weather"
 module Icons
   extend self
 
+  # @return [Hash{Symbol => Class}] A map of library names to their configuration classes
+  #
   def libraries
     {
       boxicons: Icons::Configuration::Boxicons,

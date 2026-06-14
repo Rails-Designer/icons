@@ -6,6 +6,11 @@ require "icons/icon/file_path"
 require "icons/icon/attributes"
 
 class Icons::Icon
+  # @param name [String] The icon name
+  # @param library [String, Symbol] The icon library
+  # @param variant [String, Symbol, nil] The icon variant (optional)
+  # @param arguments [Hash] Additional attributes including class, data, stroke_width, etc.
+  #
   def initialize(name:, library:, arguments:, variant: nil)
     @config = Icons.configuration
 
@@ -15,6 +20,12 @@ class Icons::Icon
     @arguments = arguments
   end
 
+  # Returns the rendered SVG markup for the icon
+  #
+  # @return [String] The SVG markup as an HTML string
+  #
+  # @raise [Icons::IconNotFound] If the icon file does not exist
+  #
   def svg
     Nokogiri::HTML::DocumentFragment.parse(File.read(file_path))
       .at_css("svg")
