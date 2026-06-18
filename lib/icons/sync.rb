@@ -6,7 +6,7 @@ require "icons/sync/process_variants"
 module Icons
   class Sync
     def initialize(name)
-      raise "[Icons] Not a valid library" if Icons.libraries.keys.exclude?(name.to_sym)
+      raise "[Icons] Not a valid library" unless Icons.libraries.key?(name.to_sym)
 
       @name = name
       @library = Icons.libraries.fetch(name.to_sym).source
@@ -36,9 +36,23 @@ module Icons
     end
 
     def clone_repository
-      raise "[Icons] Failed to clone repository" unless system("git clone '#{@library[:url]}' '#{@temp_directory}'")
+      unless clone_repository_sparse
+        puts "[Icons] Sparse clone failed, falling back to full clone"
+        FileUtils.rm_rf(@temp_directory)
+
+        raise "[Icons] Failed to clone repository" unless system("git clone '#{@library[:url]}' '#{@temp_directory}'")
+      end
 
       puts "[Icons] '#{@name}' repository cloned"
+    end
+
+    def clone_repository_sparse
+      system("git clone --depth 1 --filter=blob:none --sparse '#{@library[:url]}' '#{@temp_directory}'") &&
+        system("git -C '#{@temp_directory}' sparse-checkout set #{sparse_checkout_paths}")
+    end
+
+    def sparse_checkout_paths
+      @library[:variants].values.map { |path| "'#{path}'" }.join(" ")
     end
 
     def process_variants
