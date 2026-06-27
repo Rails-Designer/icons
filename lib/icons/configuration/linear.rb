@@ -21,6 +21,7 @@ module Icons
           # Override Linear defaults
           # config.libraries.linear.default_variant = "" # Set a default variant for Linear
           # config.libraries.linear.exclude_variants = []
+          # config.libraries.linear.variants = [] # Linear has no variants, provided for consistency
 
           # config.libraries.linear.default.css = "size-6"
           # config.libraries.linear.default.stroke_width = "2"

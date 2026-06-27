@@ -23,6 +23,7 @@ module Icons
           # Override Boxicons defaults
           # config.libraries.boxicons.default_variant = "" # Set a default variant for Boxicons
           # config.libraries.boxicons.exclude_variants = [] # Exclude specific variants
+          # config.libraries.boxicons.variants = [] # Only sync these variants
 
           # config.libraries.boxicons.solid.css = "size-6"
           # config.libraries.boxicons.solid.data = {}

@@ -21,6 +21,7 @@ module Icons
           # Override Hugeicons defaults
           # config.libraries.hugeicons.default_variant = "" # Hugeicons has no variants, this is provided for backwards compatibility
           # config.libraries.hugeicons.exclude_variants = [] # Hugeicons has no variants, this is provided for backwards compatibility
+          # config.libraries.hugeicons.variants = [] # Hugeicons has no variants, provided for consistency
 
           # config.libraries.hugeicons.default.css = "size-6"
           # config.libraries.hugeicons.default.stroke_width = "1.5"
