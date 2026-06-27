@@ -22,6 +22,7 @@ module Icons
           # Override Flags defaults
           # config.libraries.flags.default_variant = "" # Set a default variant for Flags
           # config.libraries.flags.exclude_variants = [:square, :landscape]
+          # config.libraries.flags.variants = [] # Only sync these variants
 
           # config.libraries.flags.square.default.css = "size-6"
           # config.libraries.flags.square.default.data = {}

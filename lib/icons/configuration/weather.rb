@@ -21,6 +21,7 @@ module Icons
           # Override Weather defaults
           # config.libraries.weather.default_variant = "" # Set a default variant for Wweather
           # config.libraries.weather.exclude_variants = []
+          # config.libraries.weather.variants = [] # Only sync these variants
 
           # config.libraries.weather.default.css = "size-6"
           # config.libraries.weather.default.data = {}
