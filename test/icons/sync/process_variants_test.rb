@@ -24,4 +24,38 @@ class Icons::Sync::ProcessVariantsTest < Minitest::Test
       assert_includes result, 'fill="currentColor"'
     end
   end
+
+  def test_processes_only_included_variants_when_variants_is_set
+    Dir.mktmpdir do |temp_directory|
+      FileUtils.mkdir_p(File.join(temp_directory, "svg", "filled"))
+      FileUtils.mkdir_p(File.join(temp_directory, "svg", "outline"))
+      File.write(File.join(temp_directory, "svg", "filled", "test.svg"), "<svg></svg>")
+      File.write(File.join(temp_directory, "svg", "outline", "test.svg"), "<svg></svg>")
+
+      library = { variants: { filled: "svg/filled", outline: "svg/outline" } }
+
+      processor = Icons::Sync::ProcessVariants.new(temp_directory, "tabler", library, variants: [:filled])
+      processor.process
+
+      assert File.exist?(File.join(temp_directory, "filled", "test.svg"))
+      refute File.exist?(File.join(temp_directory, "outline", "test.svg"))
+    end
+  end
+
+  def test_processes_all_variants_when_variants_is_nil
+    Dir.mktmpdir do |temp_directory|
+      FileUtils.mkdir_p(File.join(temp_directory, "svg", "filled"))
+      FileUtils.mkdir_p(File.join(temp_directory, "svg", "outline"))
+      File.write(File.join(temp_directory, "svg", "filled", "test.svg"), "<svg></svg>")
+      File.write(File.join(temp_directory, "svg", "outline", "test.svg"), "<svg></svg>")
+
+      library = { variants: { filled: "svg/filled", outline: "svg/outline" } }
+
+      processor = Icons::Sync::ProcessVariants.new(temp_directory, "tabler", library)
+      processor.process
+
+      assert File.exist?(File.join(temp_directory, "filled", "test.svg"))
+      assert File.exist?(File.join(temp_directory, "outline", "test.svg"))
+    end
+  end
 end

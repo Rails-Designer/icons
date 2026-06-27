@@ -9,10 +9,9 @@ class Icons::SyncTest < Minitest::Test
 
     capture_io { sync.send(:clone_repository) }
 
-    td = temp_dir
     assert_equal [
-      "git clone --depth 1 --filter=blob:none --sparse 'https://github.com/tabler/tabler-icons.git' '#{td}'",
-      "git -C '#{td}' sparse-checkout set 'icons/filled' 'icons/outline'"
+      "git clone --depth 1 --filter=blob:none --sparse 'https://github.com/tabler/tabler-icons.git' '#{temp_dir}'",
+      "git -C '#{temp_dir}' sparse-checkout set 'icons/filled' 'icons/outline'"
     ], commands
   end
 
@@ -22,10 +21,9 @@ class Icons::SyncTest < Minitest::Test
 
     capture_io { sync.send(:clone_repository) }
 
-    td = temp_dir
     assert commands.first.include?("--filter=blob:none"),
       "Expected first command to be the sparse clone attempt"
-    assert_equal "git clone 'https://github.com/tabler/tabler-icons.git' '#{td}'", commands.last
+    assert_equal "git clone 'https://github.com/tabler/tabler-icons.git' '#{temp_dir}'", commands.last
   end
 
   def test_clone_repository_raises_when_full_clone_also_fails
@@ -35,6 +33,20 @@ class Icons::SyncTest < Minitest::Test
     assert_raises(RuntimeError) { capture_io { sync.send(:clone_repository) } }
   end
 
+  def test_sparse_checkout_paths_returns_only_wanted_variants
+    sync = Icons::Sync.new("tabler", variants: [:filled])
+    paths = sync.send(:sparse_checkout_paths)
+
+    assert_equal "'icons/filled'", paths
+  end
+
+  def test_sparse_checkout_paths_returns_all_when_variants_is_nil
+    sync = Icons::Sync.new("tabler")
+    paths = sync.send(:sparse_checkout_paths)
+
+    assert_equal "'icons/filled' 'icons/outline'", paths
+  end
+
   private
 
   def temp_dir
@@ -42,8 +54,8 @@ class Icons::SyncTest < Minitest::Test
   end
 
   def stub_system_on(sync, &block)
-    commands = []
-    sync.define_singleton_method(:system) { |cmd| commands << cmd; block.call(cmd) }
-    commands
+    [].tap do |commands|
+      sync.define_singleton_method(:system) { |cmd| commands << cmd; block.call(cmd) }
+    end
   end
 end
