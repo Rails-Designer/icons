@@ -26,6 +26,7 @@ module Icons
           # Override Phosphor defaults
           # config.libraries.phosphor.default_variant = "" # Set a default variant for Phosphor
           # config.libraries.phosphor.exclude_variants = [:duotone, :thin] # Exclude specific variants
+          # config.libraries.phosphor.variants = [] # Only sync these variants
 
           # config.libraries.phosphor.bold.default.css = "size-6"
           # config.libraries.phosphor.bold.default.data = {}

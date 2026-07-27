@@ -6,17 +6,19 @@ require "icons/sync/transformations"
 module Icons
   class Sync
     class ProcessVariants
-      def initialize(temp_directory, name, library)
-        @temp_directory, @name, @library = temp_directory, name, library
+      def initialize(temp_directory, name, library, variants: nil)
+        @temp_directory = temp_directory
+        @name = name
+        @library = library
+        @variants = variants
       end
 
       def process
         original_variants = Dir.children(@temp_directory)
         excluded_variants = Icons.configuration.libraries.dig(@name.to_sym)&.exclude_variants || []
+        effective_variants = (@variants || @library[:variants].keys) - excluded_variants
 
-        @library[:variants].each do |variant_name, variant_source_path|
-          next if excluded_variants.include?(variant_name)
-
+        @library[:variants].slice(*effective_variants).each do |variant_name, variant_source_path|
           source = File.join(@temp_directory, variant_source_path)
           destination = File.join(@temp_directory, variant_name.to_s)
 
@@ -25,12 +27,11 @@ module Icons
           raise "[Icons] Failed to find the icons directory: '#{source}'" unless Dir.exist?(source)
 
           move_icons(source, destination)
-
           apply_transformations_to(destination)
         end
 
         remove_files_and_folders_for(original_variants)
-        remove_previously_downloaded(excluded_variants)
+        remove_previously_downloaded(@library[:variants].keys - effective_variants)
 
         puts "[Icons] Icon variants processed successfully"
       end

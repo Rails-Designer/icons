@@ -21,6 +21,7 @@ module Icons
           # Override Feather defaults
           # config.libraries.feather.default_variant = "" # Feather has no variants, this is provided for backwards compatibility
           # config.libraries.feather.exclude_variants = [] # Feather has no variants, this is provided for backwards compatibility
+          # config.libraries.feather.variants = [] # Feather has no variants, provided for consistency
 
           # config.libraries.feather.default.css = "size-6"
           # config.libraries.feather.default.stroke_width = "2"

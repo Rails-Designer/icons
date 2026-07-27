@@ -22,6 +22,7 @@ module Icons
           # Override Tabler defaults
           # config.libraries.tabler.default_variant = "" # Set a default variant for Tabler
           # config.libraries.tabler.exclude_variants = [] # Exclude specific variants
+          # config.libraries.tabler.variants = [] # Only sync these variants
 
           # config.libraries.tabler.regular.default.css = "size-6"
           # config.libraries.tabler.solid.default.css = "size-6"

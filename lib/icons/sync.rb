@@ -5,11 +5,12 @@ require "icons/sync/process_variants"
 
 module Icons
   class Sync
-    def initialize(name)
+    def initialize(name, variants: nil)
       raise "[Icons] Not a valid library" unless Icons.libraries.key?(name.to_sym)
 
       @name = name
       @library = Icons.libraries.fetch(name.to_sym).source
+      @variants = variants
       @temp_directory = File.join(temp_directory_root, name)
     end
 
@@ -52,11 +53,14 @@ module Icons
     end
 
     def sparse_checkout_paths
-      @library[:variants].values.map { |path| "'#{path}'" }.join(" ")
+      paths = @library[:variants]
+      paths = paths.slice(*@variants) if @variants
+
+      paths.values.map { |path| "'#{path}'" }.join(" ")
     end
 
     def process_variants
-      Sync::ProcessVariants.new(@temp_directory, @name, @library).process
+      Sync::ProcessVariants.new(@temp_directory, @name, @library, variants: @variants).process
     end
 
     def remove_non_svg_files
