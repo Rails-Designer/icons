@@ -13,6 +13,7 @@ module IconsTestHelper
   def setup
     @original_config = Icons.configuration
 
+    Icons.reset_registered_libraries
     Icons.configuration = Icons::Configuration.new
     Icons.configure do |config|
       config.base_path = Pathname.new(File.expand_path("fixtures", __dir__))

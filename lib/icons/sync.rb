@@ -11,7 +11,7 @@ module Icons
       @name = name
       @library = Icons.libraries.fetch(name.to_sym).source
       @variants = variants
-      @temp_directory = File.join(temp_directory_root, name)
+      @temp_directory = File.join(temp_directory_root, name.to_s)
     end
 
     def now

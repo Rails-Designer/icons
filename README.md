@@ -5,7 +5,7 @@ Add any icon library to a Ruby app. Icons has first-party support for a [dozen o
 
 ## Installation
 
-Add the core gem to your Gemfile:
+Add the core gem to the Gemfile:
 ```ruby
 gem "icons"
 ```
@@ -53,6 +53,60 @@ sprite.svg
 ```
 
 The resulting SVG will include the proper attributes and the SVG content from the library’s asset path.
+
+
+## Custom libraries
+
+Add non first-party icon libraries. The Icons gem looks for SVGs at `<icons_path>/<library_name>/<name>.svg`, so any name works without configuration.
+
+
+### Zero config
+
+Place SVGs at the expected path:
+```bash
+app/assets/svg/icons/my_icons/check.svg
+```
+
+Usage:
+```ruby
+Icons::Icon.new(name: "check", library: "my_icons", arguments: {}).svg
+```
+
+
+### Registered custom libraries
+
+Use `config.custom_library` to declare a custom library with defaults:
+```ruby
+Icons.configure do |config|
+  config.custom_library :my_icons
+end
+```
+
+Then set library specific defaults:
+```ruby
+Icons.configure do |config|
+  config.custom_library :my_icons
+
+  config.libraries.my_icons.default.css = "size-6"
+  config.libraries.my_icons.default.stroke_width = 1.5
+end
+```
+
+### Custom libraries with a git source
+
+Pass a `source:` option to make a custom library syncable from a Git repository:
+```ruby
+Icons.configure do |config|
+  config.custom_library :my_icons, source: {
+    url: "https://github.com/user/icons.git",
+    variants: { default: "." }
+  }
+end
+
+Icons::Sync.new(:my_icons).now
+```
+
+After syncing, `Icons::Icon.new(name: "check", library: "my_icons", arguments: {}).svg` , works just like any first party library.
 
 
 ## First-party libraries
