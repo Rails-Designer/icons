@@ -15,8 +15,8 @@ class Icons::ErrorsTest < Minitest::Test
     assert_equal "Icon not found", error.message
   end
 
-  def test_library_not_found_with_empty_name
-    error = Icons::LibraryNotFound.new("")
+  def test_library_not_found_without_name
+    error = Icons::LibraryNotFound.new
 
     assert_match(/No libraries were specified/, error.message)
   end
