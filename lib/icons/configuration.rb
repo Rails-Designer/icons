@@ -47,6 +47,32 @@ module Icons
       @base_path = value.is_a?(Pathname) ? value : Pathname.new(value)
     end
 
+    # Register a custom library at configuration time.
+    #
+    # @param name [Symbol] The library name used in `icon "name", library: :your_name`
+    # @param source [Hash, nil] Optional git source hash with `:url` and `:variants`.
+    #        When provided, the library becomes syncable via `Icons::Sync.new(:your_name).now`.
+    #
+    # @example Add a local custom library
+    #   Icons.configure do |config|
+    #     config.custom_library :my_icons
+    #   end
+    #
+    # @example Add a custom library with a git source
+    #   Icons.configure do |config|
+    #     config.custom_library :my_icons, source: { url: "https://github.com/user/icons.git", variants: { default: "." } }
+    #   end
+    #
+    def custom_library(name, source: nil)
+      name = name.to_sym
+
+      library_config = CustomLibrary.new(source: source)
+
+      Icons.register_library(name, library_config)
+
+      @libraries[name] = library_config.config
+    end
+
     private
 
     def set_default_config
