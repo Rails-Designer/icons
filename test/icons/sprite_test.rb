@@ -57,6 +57,17 @@ class Icons::SpriteTest < Minitest::Test
     refute_match(/<symbol/, result)
   end
 
+  def test_skips_a_file_that_is_not_valid_svg
+    sprite = Icons::Sprite.new(icons: ["broken-icon", "academic-cap"], library: "heroicons", variant: "outline")
+
+    result = nil
+    _out, err = capture_io { result = sprite.svg }
+
+    assert_match(/<symbol id="heroicons_outline_academic-cap"/, result)
+    refute_match(/broken-icon/, result)
+    assert_match(/not a valid SVG/, err)
+  end
+
   def test_generates_multiple_symbols
     Icons.configure do |config|
       config.sprite = {
