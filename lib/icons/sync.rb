@@ -88,9 +88,11 @@ module Icons
 
     def post_error_clean_up
       print "Do you want to remove the temp files? ('#{@temp_directory}') [y/n]: "
-      response = $stdin.gets.chomp.downcase
+      response = $stdin.gets
 
-      if response == "y" || response == "yes"
+      # No TTY (CI, cron, a piped `rake`): keep the files and let the real error
+      # surface, rather than masking it with `NoMethodError` on `nil.chomp`.
+      if response && %w[y yes].include?(response.chomp.downcase)
         puts "[Icons] Cleaning up…"
         FileUtils.rm_rf(@temp_directory)
       else
