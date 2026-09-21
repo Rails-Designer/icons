@@ -30,11 +30,13 @@ class Icons::Icon
   # @raise [Icons::IconNotFound] If the icon file does not exist
   #
   def svg
-    Nokogiri::HTML::DocumentFragment.parse(File.read(file_path))
-      .at_css("svg")
-      .tap { |svg| attach_attributes(to: svg) }
-      .to_html
-  rescue Errno::ENOENT
+    svg = Nokogiri::HTML::DocumentFragment.parse(File.read(file_path)).at_css("svg")
+    raise Icons::IconNotFound, error_message unless svg
+
+    attach_attributes(to: svg)
+
+    svg.to_html
+  rescue Errno::ENOENT, Errno::EACCES, Errno::EISDIR
     raise Icons::IconNotFound, error_message
   end
 

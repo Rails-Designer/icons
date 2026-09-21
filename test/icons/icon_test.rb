@@ -144,4 +144,21 @@ class Icons::IconTest < Minitest::Test
       Icons::Icon.new(name: "non-existing-icon", library: "heroicons", arguments: {}).svg
     end
   end
+
+  def test_svg_raises_icon_not_found_for_traversal_name
+    icon = Icons::Icon.new(
+      name: "../../../../../../../../lib/icons/assets/animated/faded-spinner",
+      library: "heroicons",
+      variant: "outline",
+      arguments: {}
+    )
+
+    assert_raises(Icons::IconNotFound) { icon.svg }
+  end
+
+  def test_svg_raises_icon_not_found_when_file_has_no_svg_tag
+    icon = Icons::Icon.new(name: "broken-icon", library: "heroicons", variant: "outline", arguments: {})
+
+    assert_raises(Icons::IconNotFound) { icon.svg }
+  end
 end

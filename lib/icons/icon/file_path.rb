@@ -12,6 +12,8 @@ module Icons
       end
 
       def call
+        validate_components!
+
         if animated_library?
           path = animated_icons_path
           raise Icons::IconNotFound if path.nil?
@@ -24,6 +26,18 @@ module Icons
       end
 
       private
+
+      ALLOWED_CHARACTERS = /\A[a-zA-Z0-9_-]+\z/
+
+      def validate_components!
+        raise Icons::IconNotFound, @name unless safe?(@name.to_s)
+        raise Icons::IconNotFound, @name unless safe?(@library.to_s)
+        raise Icons::IconNotFound, @name unless @variant.nil? || @variant == :"." || safe?(@variant.to_s)
+      end
+
+      def safe?(component)
+        component.match?(ALLOWED_CHARACTERS)
+      end
 
       def animated_library?
         @library == :animated

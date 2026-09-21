@@ -42,4 +42,12 @@ class Icons::Sprite::ReferenceTest < Minitest::Test
 
     refute reference.exists?
   end
+
+  def test_exists_returns_false_for_traversal_name
+    reference = Icons::Sprite::Reference.new(
+      name: "../../heroicons/outline/academic-cap", library: "heroicons", variant: "outline"
+    )
+
+    refute reference.exists?
+  end
 end

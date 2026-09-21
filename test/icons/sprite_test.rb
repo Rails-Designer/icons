@@ -48,6 +48,15 @@ class Icons::SpriteTest < Minitest::Test
     refute_match(/<symbol/, result)
   end
 
+  def test_skips_traversal_icons
+    sprite = Icons::Sprite.new(
+      icons: ["../../heroicons/outline/academic-cap"], library: "heroicons", variant: "outline"
+    )
+    result = sprite.svg
+
+    refute_match(/<symbol/, result)
+  end
+
   def test_generates_multiple_symbols
     Icons.configure do |config|
       config.sprite = {
