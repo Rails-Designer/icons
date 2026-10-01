@@ -37,4 +37,84 @@ class Icons::Icon::FilePathTest < Minitest::Test
 
     assert File.exist?(path)
   end
+
+  def test_rejects_traversal_in_name
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "../../academic-cap",
+        library: "heroicons",
+        variant: "outline"
+      ).call
+    end
+  end
+
+  def test_rejects_absolute_path_in_name
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "/etc/passwd",
+        library: "heroicons",
+        variant: "outline"
+      ).call
+    end
+  end
+
+  def test_rejects_path_separator_in_name
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "outline/academic-cap",
+        library: "heroicons",
+        variant: "outline"
+      ).call
+    end
+  end
+
+  def test_rejects_backslash_in_name
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "academic-cap\\evil",
+        library: "heroicons",
+        variant: "outline"
+      ).call
+    end
+  end
+
+  def test_rejects_nul_byte_in_name
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "academic-cap\u0000",
+        library: "heroicons",
+        variant: "outline"
+      ).call
+    end
+  end
+
+  def test_rejects_traversal_in_variant
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "academic-cap",
+        library: "heroicons",
+        variant: "outline/../../academic-cap"
+      ).call
+    end
+  end
+
+  def test_rejects_traversal_in_library
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "academic-cap",
+        library: "../../evil",
+        variant: "outline"
+      ).call
+    end
+  end
+
+  def test_rejects_traversal_in_animated_library_name
+    assert_raises(Icons::IconNotFound) do
+      Icons::Icon::FilePath.new(
+        name: "../../../../../test/fixtures/app/assets/svg/icons/heroicons/outline/academic-cap",
+        library: "animated",
+        variant: nil
+      ).call
+    end
+  end
 end
