@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "fileutils"
+require "stringio"
+require "tmpdir"
 
 class Icons::SyncTest < Minitest::Test
   def test_clone_repository_uses_shallow_partial_sparse_clone
@@ -47,7 +50,40 @@ class Icons::SyncTest < Minitest::Test
     assert_equal "'icons/filled' 'icons/outline'", paths
   end
 
+  def test_post_error_clean_up_keeps_files_when_there_is_no_tty
+    sync = Icons::Sync.new("tabler")
+
+    out, _err = with_stdin("") do
+      capture_io { sync.send(:post_error_clean_up) }
+    end
+
+    assert_match(/Keeping files at/, out)
+    refute_match(/Cleaning up/, out)
+  end
+
+  def test_post_error_clean_up_removes_files_on_yes
+    Dir.mktmpdir do |dir|
+      temp = File.join(dir, "tabler")
+      FileUtils.mkdir_p(temp)
+
+      sync = Icons::Sync.new("tabler")
+      sync.instance_variable_set(:@temp_directory, temp)
+
+      with_stdin("y\n") { capture_io { sync.send(:post_error_clean_up) } }
+
+      refute Dir.exist?(temp)
+    end
+  end
+
   private
+
+  def with_stdin(input)
+    original = $stdin
+    $stdin = StringIO.new(input)
+    yield
+  ensure
+    $stdin = original
+  end
 
   def temp_dir
     Icons.configuration.base_path.join("tmp/icons/tabler").to_s
