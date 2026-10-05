@@ -55,6 +55,13 @@ module Icons
       return unless reference.exists?
 
       svg_element = Nokogiri::XML(File.read(reference.file_path)).at_css("svg")
+
+      if svg_element.nil?
+        warn "Icon is not a valid SVG: #{reference.name} from #{reference.library}/#{reference.variant}"
+
+        return
+      end
+
       view_box = svg_element["viewBox"] || "0 0 24 24"
       content = svg_element.children.map(&:to_s).join
 
