@@ -5,10 +5,11 @@ require "pathname"
 module Icons
   class Icon
     class FilePath
-      def initialize(name:, library:, variant:)
+      def initialize(name:, library:, variant:, config: Icons.configuration)
         @name = name
         @library = library.to_sym
         @variant = variant&.to_sym
+        @config = config
       end
 
       def call
@@ -59,16 +60,16 @@ module Icons
       def custom_library_path
         library_config = Icons.libraries[@library]
 
-        Icons.config.base_path.join(library_config.custom_path, "#{@name}.svg")
+        @config.base_path.join(library_config.custom_path, "#{@name}.svg")
       end
 
       def app_path
-        Icons.config.base_path.join(*parts)
+        @config.base_path.join(*parts)
       end
 
       def parts
         [
-          Icons.configuration.icons_path,
+          @config.icons_path,
           @library.to_s,
           (@variant&.to_s unless @variant == :"."), # Don't include "." as a directory
           "#{@name}.svg"

@@ -109,6 +109,59 @@ Icons::Sync.new(:my_icons).now
 After syncing, `Icons::Icon.new(name: "check", library: "my_icons", arguments: {}).svg` , works just like any first party library.
 
 
+## Pruning unused icons
+
+A synced library contains its full icon set. An app usually renders a few icons. `Icons.prune` deletes the SVGs that no source references. The deployed app then carries only the icons it renders.
+
+```ruby
+Icons.prune(dry_run: true)  # deletes nothing
+
+Icons.prune(dry_run: false)  # deletes unreferenced SVGs
+```
+
+`dry_run` defaults to `true`. Call `Icons.prune` from a rake task, a release script or a Docker `RUN`, before assets are packaged:
+
+```dockerfile
+RUN bin/rails runner "Icons::Sync.new(:lucide).now"
+RUN bin/rails runner "Icons.prune(dry_run: false)"
+RUN bin/rails assets:precompile
+```
+
+The scanner reads `app/**/*.rb`, `lib/**/*.rb` and `config/**/*.rb`. It finds `Icons::Icon.new`, `Icons::Sprite.new` and `config.sprite`. It also keeps names declared in `ICON` and `ICONS` constants and in `icon:` hash keys. A dynamic variant keeps the icon in every variant.
+
+Configuration:
+
+```ruby
+Icons.configure do |config|
+  # Names or globs to keep. Use a flat list or a per-library hash.
+  config.keep_icons = %w[menu palette circle-*]
+  # config.keep_icons = { lucide: %w[menu], phosphor: %w[lock] }
+
+  # Libraries to leave untouched, for example when names come from the database.
+  config.skip_libraries = [:phosphor]
+
+  # Extra files to scan. The scanner matches them with registered text patterns.
+  config.prune_source_globs = ["config/icons.yml"]
+end
+```
+
+Templates and other formats are opt-in. Register the calls and text patterns that your app uses:
+
+```ruby
+Icons::Prune.register_call_pattern(
+  method: :icon, name: :positional, library: :library, variant: :variant
+)
+
+Icons::Prune.register_text_pattern(
+  /icon\s+"([a-z0-9_-]+)",\s+library:\s+:([a-z0-9_-]+)/, name: 1, library: 2
+)
+```
+
+With `dry_run: false`, a prune stops before deleting anything if a referenced icon is missing. It also stops if a Ruby file has a syntax error. The report shows counts, freed bytes, deleted names, skipped libraries and failures.
+
+Run pruning during the build, not at boot. Do not run it in a release phase. The filesystem change will not persist. Do not commit the pruned set. Run `Icons::Sync` to restore the full set in development.
+
+
 ## First-party libraries
 
 - [Boxicons](https://railsdesigner.com/open-source/rails-icons/boxicons/) (1600+ icons)

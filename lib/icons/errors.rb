@@ -17,8 +17,20 @@ module Icons
         super("The library `#{library_name}` is not available. Check the library name and try again.")
       else
         libraries = Icons.libraries.keys.join(", ")
+
         super("No libraries were specified. Choose from: #{libraries}")
       end
+    end
+  end
+
+  class PruneError < StandardError
+    # @return [Symbol, nil] :parse, :verification, or :no_references
+    attr_reader :kind
+
+    def initialize(message, kind: nil)
+      @kind = kind
+
+      super(message)
     end
   end
 end

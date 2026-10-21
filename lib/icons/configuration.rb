@@ -8,6 +8,15 @@ module Icons
     # @return [String, nil]
     attr_accessor :default_library, :icons_path, :default_variant, :sprite, :default_sprite_location, :validate_sprite_icons
 
+    # @return [Array<String>, Hash{Symbol => Array<String>}] Icons or globs to keep when pruning
+    attr_accessor :keep_icons
+
+    # @return [Array<Symbol>] Libraries that pruning must leave untouched
+    attr_accessor :skip_libraries
+
+    # @return [Array<String>] Additional globs to scan for icon references when pruning
+    attr_accessor :prune_source_globs
+
     # @return [Options]
     attr_reader :libraries
 
@@ -82,6 +91,9 @@ module Icons
       @sprite = {}
       @default_sprite_location = nil
       @validate_sprite_icons = false
+      @keep_icons = []
+      @skip_libraries = []
+      @prune_source_globs = []
     end
 
     def set_libraries_config
