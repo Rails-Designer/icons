@@ -18,7 +18,8 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{bin,config,lib}/**/*", "Rakefile", "README.md", "icons.gemspec", "Gemfile", "Gemfile.lock"]
 
-  spec.required_ruby_version = ">= 3.1.0"
+  spec.required_ruby_version = ">= 3.2.0"
 
   spec.add_runtime_dependency "nokogiri", "~> 1.16", ">= 1.16.4"
+  spec.add_runtime_dependency "prism", "~> 1.5"
 end

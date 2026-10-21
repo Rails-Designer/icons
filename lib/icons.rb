@@ -9,6 +9,7 @@ require "icons/icon"
 require "icons/sprite/reference"
 require "icons/sprite"
 require "icons/sync"
+require "icons/prune"
 
 module Icons
   class << self
@@ -27,6 +28,14 @@ module Icons
     #
     def config
       configuration || configure {}
+    end
+
+    # Delete synced icons that no source references.
+    #
+    # @return [Icons::Prune::Report]
+    #
+    def prune(**options)
+      Prune.new(**options).call
     end
   end
 end

@@ -3,6 +3,7 @@ PATH
   specs:
     icons (0.11.0)
       nokogiri (~> 1.16, >= 1.16.4)
+      prism (~> 1.5)
 
 GEM
   remote: https://rubygems.org/
