@@ -112,6 +112,7 @@ DEPENDENCIES
   icons!
   minitest
   rake
+  rubocop
   standard
 
 CHECKSUMS

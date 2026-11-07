@@ -12,4 +12,5 @@ group :development, :test do
   gem "rake"
   gem "minitest"
   gem "debug", "~> 1.9", ">= 1.9.2"
+  gem "rubocop"
 end
