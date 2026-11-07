@@ -1,0 +1,4 @@
+Icons/IconName:
+  Description: Checks that icons referenced in Ruby source exist in the configured icons directory.
+  Enabled: true
+  VersionAdded: "0.12.0"

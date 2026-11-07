@@ -109,6 +109,18 @@ Icons::Sync.new(:my_icons).now
 After syncing, `Icons::Icon.new(name: "check", library: "my_icons", arguments: {}).svg` , works just like any first party library.
 
 
+## RuboCop
+
+Add to `.rubocop.yml`:
+
+```yaml
+require:
+  - icons/rubocop
+```
+
+The cop checks `Icons::Icon.new` and `Icons::Sprite.new` against `Icons.config`. It skips dynamic names and reports missing icons with a suggestion.
+
+
 ## First-party libraries
 
 - [Boxicons](https://railsdesigner.com/open-source/rails-icons/boxicons/) (1600+ icons)
