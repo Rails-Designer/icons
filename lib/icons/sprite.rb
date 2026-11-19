@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cgi/escape"
+
 module Icons
   class Sprite
     # @param config [Configuration] The configuration object (defaults to Icons.configuration)
@@ -64,12 +66,20 @@ module Icons
 
       view_box = svg_element["viewBox"] || "0 0 24 24"
       content = svg_element.children.map(&:to_s).join
+      attributes = presentation_attributes_from(svg_element).map { |name, value| %( #{name}="#{CGI.escapeHTML(value)}") }.join
 
-      %(<symbol id="#{reference.id}" viewBox="#{view_box}">#{content}</symbol>)
+      %(<symbol id="#{reference.id}" viewBox="#{view_box}"#{attributes}>#{content}</symbol>)
     rescue Icons::IconNotFound
       warn "Icon not found: #{reference.name} from #{reference.library}/#{reference.variant}"
 
       nil
+    end
+
+    # `stroke-width` is left out on purpose: it is set per rendered icon on the `<svg><use>` element
+    PRESENTATION_ATTRIBUTES = %w[fill stroke stroke-linecap stroke-linejoin].freeze
+
+    def presentation_attributes_from(svg_element)
+      PRESENTATION_ATTRIBUTES.filter_map { |name| [name, svg_element[name]] if svg_element[name] }
     end
   end
 end
