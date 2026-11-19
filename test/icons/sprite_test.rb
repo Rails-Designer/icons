@@ -68,6 +68,17 @@ class Icons::SpriteTest < Minitest::Test
     assert_match(/not a valid SVG/, err)
   end
 
+  def test_keeps_root_presentation_attributes_on_the_symbol
+    sprite = Icons::Sprite.new(icons: ["academic-cap"], library: "heroicons", variant: "outline")
+    result = sprite.svg
+
+    symbol = result[/<symbol id="heroicons_outline_academic-cap"[^>]*>/]
+
+    assert_match(/ fill="none"/, symbol)
+    assert_match(/ stroke="currentColor"/, symbol)
+    refute_match(/stroke-width/, symbol)
+  end
+
   def test_generates_multiple_symbols
     Icons.configure do |config|
       config.sprite = {
